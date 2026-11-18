@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的订单 - 校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f6f8;
+      color: #333;
+    }
+    header {
+      background: #fff;
+      padding: 16px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 18px; flex: 1; text-align: center; }
+    .back { color: #666; text-decoration: none; font-size: 14px; }
+    .spacer { width: 44px; } /* 占位，让标题真正居中 */
+    main { max-width: 720px; margin: 0 auto; padding: 8px 16px 40px; }
+    .section-title { font-size: 15px; color: #666; margin: 18px 0 10px; }
+    .order-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .order-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .order-title { font-size: 16px; font-weight: bold; }
+    .price { color: #e6432d; font-weight: bold; font-size: 17px; white-space: nowrap; }
+    .order-line { margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+    .status { font-size: 12px; padding: 2px 8px; border-radius: 4px; }
+    .st-paid { background: #fff3e0; color: #e67e22; }       /* 已付款(模拟)：橙色=待处理 */
+    .st-completed { background: #e8f8ef; color: #07c160; }  /* 已完成：绿色 */
+    .st-cancelled { background: #eee; color: #999; }        /* 已取消：灰色 */
+    .time { color: #999; font-size: 12px; }
+    .order-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-primary {
+      border: none; background: #07c160; color: #fff;
+      padding: 5px 14px; border-radius: 16px; font-size: 13px; cursor: pointer;
+    }
+    .btn-danger {
+      border: 1px solid #e6432d; color: #e6432d; background: #fff;
+      padding: 5px 14px; border-radius: 16px; font-size: 13px; cursor: pointer;
+    }
+    .btn-outline {
+      border: 1px solid #07c160; color: #07c160; background: #fff;
+      padding: 5px 14px; border-radius: 16px; font-size: 13px; cursor: pointer;
+    }
+    .btn-primary:hover { background: #06ad56; }
+    .empty, .loading, .error {
+      text-align: center; color: #999; padding: 28px 0; font-size: 14px;
+    }
+    .error { color: #e6432d; }
+    .tip { color: #999; font-size: 12px; text-align: center; margin-top: 24px; line-height: 1.8; }
+    /* ———— 浅绿主题升级 ———— */
+    body { background: var(--green-bg); color: var(--ink); }
+    header { background: linear-gradient(135deg, #ffffff, #e6f4e9); border-bottom: 1px solid var(--line); }
+    header h1 { color: var(--green-dark); }
+    .section-title { color: var(--green-deep); }
+    .order-card { border-radius: 14px; box-shadow: var(--shadow); }
+    .price { color: var(--green-dark); }
+    .status.st-paid { background: #fff6e5; color: var(--orange); }
+    .status.st-completed { background: var(--green-light); color: var(--green-deep); }
+    .status.st-cancelled { background: #f0f0f0; color: #999; }
+    .tip { color: var(--gray); }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back">← 首页</a>
+    <h1>📦 我的订单</h1>
+    <span class="spacer"></span>
+  </header>
+  <main>
+    <h2 class="section-title">我买的</h2>
+    <div id="buying-list"><p class="loading">加载中…</p></div>
+    <h2 class="section-title">我卖的</h2>
+    <div id="selling-list"><p class="loading">加载中…</p></div>
+    <p class="tip">课程项目模拟下单，不发生真实付款。<br>下单后请与对方私聊，约定时间地点当面交易。</p>
+  </main>
+
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - 校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f6f8;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      padding-top: 80px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    h1 { font-size: 20px; margin-bottom: 8px; }
+    .tip { color: #999; font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+    label { display: block; font-size: 14px; margin-bottom: 6px; color: #555; }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    input:focus { outline: none; border-color: #07c160; }
+    button {
+      width: 100%;
+      padding: 11px;
+      background: #07c160;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:disabled { background: #9cd9b5; cursor: not-allowed; }
+    .msg { font-size: 13px; margin-top: 12px; min-height: 18px; }
+    .msg.error { color: #e6432d; }
+    .msg.ok { color: #07c160; }
+    .back { display: block; text-align: center; margin-top: 16px; font-size: 13px; color: #999; text-decoration: none; }
+    .hidden { display: none; }
+    /* ———— 浅绿主题升级 ———— */
+    body { background: linear-gradient(160deg, #d8eddc, #f4fbf5 55%); min-height: 100vh; }
+    .card { border-radius: 20px; box-shadow: 0 10px 30px rgba(76,175,109,.16); }
+    h1 { color: var(--green-dark); }
+    .tip { color: var(--gray); }
+    label { color: #45604c; }
+    input { border: 1.5px solid var(--line); border-radius: 12px; }
+    input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(76,175,109,.12); }
+    button, #btn-send, #btn-verify {
+      border-radius: 999px; background: var(--green-grad);
+      box-shadow: 0 4px 12px rgba(76,175,109,.3);
+    }
+    button:hover, #btn-send:hover, #btn-verify:hover { filter: brightness(1.06); }
+    .msg.error { color: var(--red); }
+    .msg.ok { color: var(--green-deep); }
+    .back { color: var(--gray); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>邮箱验证码登录</h1>
+    <p class="tip">仅限校内邮箱。输入邮箱收取验证码，无需注册、无需密码。</p>
+
+    <!-- 第一步：输入邮箱 -->
+    <div id="step-email">
+      <label for="email">校内邮箱</label>
+      <input type="email" id="email" placeholder="yourname@tju.edu.cn" autocomplete="email">
+      <button id="btn-send" onclick="sendCode()">发送验证码</button>
+    </div>
+
+    <!-- 第二步：输入验证码（发送成功后显示） -->
+    <div id="step-code" class="hidden">
+      <label for="code">验证码</label>
+      <input type="text" id="code" placeholder="邮件里的数字验证码" maxlength="10" inputmode="numeric">
+      <button id="btn-verify" onclick="verifyCode()">登录</button>
+    </div>
+
+    <p class="msg" id="msg"></p>
+    <a class="back" href="index.html">← 返回首页</a>
+  </div>
+
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

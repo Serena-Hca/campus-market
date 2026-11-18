@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的发布 - 校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    main { max-width: 720px; margin: 0 auto; padding: 16px; }
+    .my-item {
+      background: #fff; border-radius: var(--radius); padding: 14px; margin-bottom: 12px;
+      display: flex; gap: 12px; align-items: center; box-shadow: var(--shadow);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .my-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+    .thumb {
+      width: 68px; height: 68px; border-radius: 12px; object-fit: cover;
+      background: var(--green-light); flex-shrink: 0;
+    }
+    .info { flex: 1; min-width: 0; }
+    .info .row1 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .info h2 { font-size: 16px; }
+    .badge.active { background: var(--green-light); color: var(--green-deep); }
+    .badge.sold { background: #f0f0f0; color: #999; }
+    .info .meta { color: var(--gray); font-size: 13px; margin-top: 4px; }
+    .actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .actions button {
+      border-radius: 999px; padding: 6px 14px; font-size: 13px;
+      cursor: pointer; white-space: nowrap; background: #fff;
+    }
+    .btn-sold { color: var(--orange); border: 1.5px solid #ffd591; }
+    .btn-restore { color: var(--green-deep); border: 1.5px solid #95d8ae; }
+    .btn-delete { color: var(--red); border: 1.5px solid #f5c1c0; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html"><h1>← 我的发布</h1></a>
+    <div id="auth-area"></div>
+  </header>
+  <main>
+    <div id="my-list"><p class="empty">加载中…</p></div>
+  </main>
+
+  <!-- Supabase 本地库文件（已从 npm 包提取，不依赖 CDN，国内网络稳定） -->
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="my.js"></script>
+</body>
+</html>

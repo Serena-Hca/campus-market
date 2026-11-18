@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    main { max-width: 1020px; margin: 0 auto; padding: 16px; }
+    /* 首页横幅（AI 生成的薄荷绿校园插画） */
+    .hero { position: relative; border-radius: 18px; overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow); }
+    .hero img { width: 100%; height: 190px; object-fit: cover; display: block; }
+    .hero .hero-text {
+      position: absolute; left: 24px; top: 50%; transform: translateY(-50%);
+      color: #1e5232; text-shadow: 0 1px 8px rgba(255,255,255,.9);
+    }
+    .hero .hero-text h2 { font-size: 24px; margin-bottom: 6px; }
+    .hero .hero-text p { font-size: 13px; }
+    /* 快捷入口：圆形图标导航（参考主流二手 App） */
+    .quick-nav { display: flex; gap: 10px; margin-bottom: 16px; }
+    .quick-nav a {
+      flex: 1; min-width: 86px; background: #fff; border-radius: 16px;
+      box-shadow: var(--shadow); padding: 12px 8px; text-align: center;
+      color: var(--ink); font-size: 13px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .quick-nav a:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .q-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--green-light); font-size: 21px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* 搜索框（胶囊形） */
+    .search-bar { position: relative; margin-bottom: 12px; }
+    .search-bar .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #9ab3a0; }
+    .search-bar input { border-radius: 999px; padding-left: 44px; }
+    /* 分类筛选条 */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .chip {
+      padding: 6px 15px; border-radius: 999px; background: #fff;
+      border: 1px solid var(--line); color: #6b7f70; font-size: 13px;
+      cursor: pointer; user-select: none; transition: all .15s;
+    }
+    .chip:hover { border-color: var(--green); color: var(--green-deep); }
+    .chip.active {
+      background: var(--green-grad); border-color: transparent; color: #fff;
+      font-weight: bold; box-shadow: 0 3px 10px rgba(76,175,109,.35);
+    }
+    .section-title { font-size: 16px; color: var(--green-dark); margin: 2px 0 12px; }
+    /* 物品网格：双列卡片，照片在上、价格醒目 */
+    #item-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 14px; }
+    .item-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: var(--shadow); display: flex; flex-direction: column;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .item-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .item-photo-box {
+      position: relative; height: 150px;
+      background: linear-gradient(135deg, #eef7ef, #ddefe1);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .item-photo-box img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-placeholder { font-size: 34px; opacity: .4; }
+    .is-sold .item-photo-box img { filter: grayscale(.85); opacity: .85; }
+    .sold-overlay {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(36,92,57,.72); color: #fff;
+      font-size: 12px; padding: 3px 10px; border-radius: 999px;
+    }
+    .item-body { padding: 12px 14px 0; display: flex; flex-direction: column; flex: 1; }
+    .title-row h2 { font-size: 15px; line-height: 1.4; }
+    .desc {
+      color: #6b7f70; font-size: 13px; margin-top: 6px; line-height: 1.5;
+      overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    }
+    .contact { font-size: 13px; margin-top: 8px; color: var(--green-deep); font-weight: 500; }
+    .contact a { color: var(--gray); font-size: 12px; }
+    .meta { color: #b3beb5; font-size: 12px; margin-top: 6px; }
+    .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .buy-btn {
+      display: inline-block; border: none; background: var(--green-grad);
+      color: #fff !important; padding: 6px 15px; border-radius: 999px;
+      font-size: 13px; text-decoration: none; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(76,175,109,.3);
+    }
+    .buy-btn:hover { filter: brightness(1.06); }
+    .chat-btn {
+      display: inline-block; border: 1.5px solid var(--green);
+      color: var(--green-deep); background: #fff; padding: 5px 14px;
+      border-radius: 999px; font-size: 13px; text-decoration: none; cursor: pointer;
+    }
+    .chat-btn:hover { background: var(--green-light); }
+    .item-foot {
+      margin-top: auto; padding: 12px 14px 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .price { color: var(--green-dark); font-weight: bold; font-size: 19px; }
+    .is-sold .price { color: #aeb9b1; }
+    .manage-link { font-size: 12px; color: var(--gray); }
+    .empty, .error, .loading { grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛒 校园二手集市</h1>
+    <div id="auth-area"></div>
+  </header>
+  <main>
+    <div class="hero">
+      <img src="assets/banner.png" alt="校园二手集市">
+      <div class="hero-text">
+        <h2>让闲置游起来 🌱</h2>
+        <p>校内同学面对面交易 · 安全环保不浪费</p>
+      </div>
+    </div>
+    <div class="quick-nav" id="quick-nav"></div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="搜索想要的二手好物，如：自行车、教材…">
+    </div>
+    <div class="filter-bar" id="filter-bar"></div>
+    <h2 class="section-title">🧺 最新闲置</h2>
+    <div id="item-list">
+      <p class="loading">加载中…</p>
+    </div>
+  </main>
+
+  <!-- Supabase 本地库文件（已从 npm 包提取，不依赖 CDN，国内网络稳定） -->
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

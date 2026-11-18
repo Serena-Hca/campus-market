@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的消息 - 校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f6f8;
+      color: #333;
+    }
+    header {
+      background: #fff;
+      padding: 14px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+    }
+    header h1 { font-size: 17px; flex: 1; }
+    header a { color: #07c160; text-decoration: none; font-size: 14px; }
+    main { max-width: 720px; margin: 16px auto; padding: 0 16px; }
+
+    .conv-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .conv-card:hover { background: #fafafa; }
+    .conv-card img, .conv-card .no-img {
+      width: 52px; height: 52px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #f5f6f8;
+      flex-shrink: 0;
+    }
+    .no-img { display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 20px; }
+    .conv-body { flex: 1; min-width: 0; }
+    .conv-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .conv-title { font-size: 15px; font-weight: bold; }
+    .conv-time { color: #bbb; font-size: 12px; white-space: nowrap; }
+    .conv-preview {
+      color: #888; font-size: 13px; margin-top: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .role-tag {
+      display: inline-block;
+      font-size: 11px; padding: 1px 6px;
+      border-radius: 4px; margin-left: 6px;
+      font-weight: normal;
+    }
+    .role-buy { background: #e8f7ef; color: #07c160; }
+    .role-sell { background: #fdf0e8; color: #e67e22; }
+    .sold-tag {
+      display: inline-block;
+      background: #eee; color: #999;
+      font-size: 11px; padding: 1px 6px;
+      border-radius: 4px; margin-left: 6px;
+      font-weight: normal;
+    }
+    .empty { text-align: center; color: #999; padding: 60px 0; font-size: 14px; line-height: 2; }
+    .empty a { color: #07c160; }
+    /* ———— 浅绿主题升级 ———— */
+    body { background: var(--green-bg); }
+    header h1 { color: var(--green-dark); }
+    header a { color: var(--green-deep) !important; }
+    .conv-card { border-radius: 14px; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
+    .conv-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); background: #fff !important; }
+    .role-tag.role-buy { background: var(--green-light); color: var(--green-deep); }
+    .role-tag.role-sell { background: #fff6e5; color: var(--orange); }
+    .conv-time { color: #b3beb5; }
+    .empty a { color: var(--green-deep); }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">← 首页</a>
+    <h1>💬 我的消息</h1>
+  </header>
+  <main>
+    <div id="conv-list"><p class="empty">加载中…</p></div>
+  </main>
+
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="inbox.js"></script>
+</body>
+</html>

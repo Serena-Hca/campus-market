@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发布闲置 - 校园二手集市</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    main { max-width: 560px; margin: 24px auto; padding: 0 16px 40px; }
+    .card { background: #fff; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    label { margin: 16px 0 6px; }
+    label:first-child { margin-top: 0; }
+    .required::after { content: " *"; color: var(--red); }
+    textarea { resize: vertical; min-height: 96px; }
+    .photo-preview { width: 100%; max-height: 240px; object-fit: contain; border-radius: 12px; margin-top: 8px; background: var(--green-light); }
+    .hidden { display: none; }
+    button {
+      width: 100%; padding: 12px; margin-top: 24px; border: none;
+      background: var(--green-grad); color: #fff; border-radius: 999px;
+      font-size: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(76,175,109,.3);
+    }
+    button:hover { filter: brightness(1.06); }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    .msg { color: var(--red); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛒 校园二手集市</h1>
+    <a href="index.html">← 返回首页</a>
+  </header>
+  <main>
+    <div class="card">
+      <label class="required" for="title">标题</label>
+      <input type="text" id="title" maxlength="50" placeholder="一句话说清是什么，如：九成新高数教材">
+
+      <label class="required" for="category">分类</label>
+      <select id="category">
+        <option value="" disabled selected>请选择分类</option>
+        <option>数码电子</option>
+        <option>教材书籍</option>
+        <option>生活用品</option>
+        <option>服饰鞋包</option>
+        <option>运动健身</option>
+        <option>美妆个护</option>
+        <option>宿舍家具</option>
+        <option>其他</option>
+      </select>
+      <p class="hint">选对分类，同学更容易找到你的闲置</p>
+
+      <label class="required" for="description">描述</label>
+      <textarea id="description" maxlength="500" placeholder="成色、购买时间、出手原因、取货地点等"></textarea>
+
+      <label for="photo">照片（选填）</label>
+      <input type="file" id="photo" accept="image/*">
+      <p class="hint">有照片的物品更容易卖出去。手机拍照即可，上传前会自动压缩</p>
+      <img id="photo-preview" class="photo-preview hidden" alt="照片预览">
+
+      <label class="required" for="price">价格（元）</label>
+      <input type="number" id="price" min="0" step="0.01" placeholder="平台规则：必须标真实价格">
+      <p class="hint">标价即成交价，谢绝"私聊询价"——这是本平台与二手群的区别</p>
+
+      <label class="required" for="contact">联系方式</label>
+      <input type="text" id="contact" maxlength="50" placeholder="微信号 / QQ号">
+      <p class="hint">仅登录的校内同学可见</p>
+
+      <button id="btn-submit" onclick="submitItem()">发布</button>
+      <p class="msg" id="msg"></p>
+    </div>
+  </main>
+
+  <script src="lib/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="publish.js"></script>
+</body>
+</html>

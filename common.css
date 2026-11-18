@@ -1,0 +1,107 @@
+/* ============================================
+   校园二手集市 · 全局设计系统（浅绿薄荷主题）
+   所有页面共用：色板 / 顶栏 / 按钮 / 徽章 / 表单
+   页面自己的样式写在各自 <style> 里，会覆盖这里的默认值
+   ============================================ */
+
+:root {
+  --green: #4caf6d;          /* 主色：清新的草绿 */
+  --green-deep: #357a4d;     /* 深绿：文字强调 */
+  --green-dark: #245c39;     /* 更深：价格、标题 */
+  --green-light: #e3f3e7;    /* 浅绿底：标签、hover */
+  --green-bg: #edf6ee;       /* 页面背景：薄荷绿 */
+  --green-grad: linear-gradient(135deg, #6cc98a, #4caf6d);
+  --ink: #2e3b31;            /* 正文 */
+  --gray: #8fa596;           /* 次要文字 */
+  --line: #dcebdd;           /* 边框 */
+  --red: #e05d5b;            /* 危险/错误 */
+  --orange: #d48806;         /* 待处理状态 */
+  --radius: 16px;
+  --shadow: 0 2px 10px rgba(76, 175, 109, .10);
+  --shadow-hover: 0 8px 22px rgba(76, 175, 109, .20);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--green-bg);
+  color: var(--ink);
+}
+
+a { color: var(--green-deep); text-decoration: none; }
+
+/* ---------- 顶栏 ---------- */
+header {
+  background: linear-gradient(135deg, #ffffff, #e6f4e9);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(76, 175, 109, .08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+}
+header h1 { font-size: 19px; color: var(--green-dark); }
+header a { text-decoration: none; color: inherit; }
+
+#auth-area { font-size: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+#auth-area a { color: var(--green-deep); padding: 5px 10px; border-radius: 999px; }
+#auth-area a:hover { background: var(--green-light); }
+.user-email { color: var(--gray); font-size: 13px; }
+
+/* ---------- 按钮 ---------- */
+.btn-primary {
+  border: none; background: var(--green-grad); color: #fff;
+  padding: 6px 16px; border-radius: 999px; font-size: 13px; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76, 175, 109, .25);
+}
+.btn-primary:hover { filter: brightness(1.06); }
+.btn-outline {
+  border: 1.5px solid var(--green); color: var(--green-deep); background: #fff;
+  padding: 5px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
+}
+.btn-outline:hover { background: var(--green-light); }
+.btn-danger {
+  border: 1.5px solid #f5c1c0; color: var(--red); background: #fff;
+  padding: 5px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
+}
+.btn-danger:hover { background: #fff5f5; }
+.logout-btn {
+  background: none; border: 1px solid var(--line); color: var(--gray);
+  padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: 13px;
+}
+.logout-btn:hover { border-color: var(--green); color: var(--green-deep); }
+
+/* ---------- 小徽章与标签 ---------- */
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+.cat-tag {
+  display: inline-block; background: var(--green-light); color: var(--green-deep);
+  font-size: 12px; padding: 2px 8px; border-radius: 6px; font-weight: normal;
+}
+.sold-tag { background: #eee; color: #999; }
+
+/* ---------- 状态与提示 ---------- */
+.empty, .loading, .error {
+  text-align: center; color: var(--gray); padding: 36px 0;
+  font-size: 14px; line-height: 2;
+}
+.error { color: var(--red); }
+.msg { font-size: 13px; margin-top: 12px; min-height: 18px; }
+.msg.error { color: var(--red); }
+.msg.ok { color: var(--green-deep); }
+
+/* ---------- 表单 ---------- */
+label { display: block; font-size: 14px; margin-bottom: 6px; color: #45604c; }
+input, textarea, select {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--line); border-radius: 12px;
+  font-size: 15px; font-family: inherit; background: #fff; color: var(--ink);
+}
+input:focus, textarea:focus, select:focus {
+  outline: none; border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(76, 175, 109, .12);
+}
+.hint { font-size: 12px; color: var(--gray); margin-top: 4px; }
