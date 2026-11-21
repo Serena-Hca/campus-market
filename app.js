@@ -77,8 +77,8 @@ async function loadItems(keyword = "") {
   // image_url 两种角色都查：照片已授权 anon 可读（见 sql/003）
   // user_id 登录时查：用来判断"这是不是我自己发的"，自己的物品不显示私聊按钮
   const fields = currentUser
-    ? "id, user_id, title, description, price, contact, status, image_url, category, created_at"
-    : "id, title, description, price, status, image_url, category, created_at";
+    ? "id, user_id, title, description, price, contact, status, image_url, category, source, created_at"
+    : "id, title, description, price, status, image_url, category, source, created_at";
 
   let query = sb.from("items").select(fields).order("created_at", { ascending: false });
 
@@ -152,7 +152,7 @@ function renderList() {
       </div>
       <div class="item-body">
         <div class="title-row">
-          <h2>${escapeHtml(item.title)}<span class="cat-tag">${escapeHtml(item.category || "其他")}</span></h2>
+          <h2>${escapeHtml(item.title)}${item.source === "agent" ? `<span class="badge-ai">AI 生成</span>` : ""}<span class="cat-tag">${escapeHtml(item.category || "其他")}</span></h2>
         </div>
         <p class="desc">${escapeHtml(item.description)}</p>
         ${currentUser
@@ -181,6 +181,7 @@ function renderQuickNav() {
   }
   nav.innerHTML = `
     <a href="publish.html"><span class="q-icon">📮</span>发布闲置</a>
+    <a href="import.html"><span class="q-icon">🤖</span>AI 回填</a>
     <a href="my.html"><span class="q-icon">📋</span>我的发布</a>
     <a href="orders.html"><span class="q-icon">📦</span>我的订单</a>
     <a href="inbox.html"><span class="q-icon">💬</span>消息</a>`;

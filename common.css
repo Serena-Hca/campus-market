@@ -82,6 +82,11 @@ header a { text-decoration: none; color: inherit; }
   font-size: 12px; padding: 2px 8px; border-radius: 6px; font-weight: normal;
 }
 .sold-tag { background: #eee; color: #999; }
+.badge-ai {
+  display: inline-block; background: #E1F5EE; color: #0F6E56;
+  font-size: 11px; padding: 1px 6px; border-radius: 10px; font-weight: normal;
+  margin-left: 4px; vertical-align: middle;
+}
 
 /* ---------- 状态与提示 ---------- */
 .empty, .loading, .error {
