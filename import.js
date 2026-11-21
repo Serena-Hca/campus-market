@@ -87,6 +87,58 @@ function parsePreview() {
   preview.classList.remove("hidden");
 }
 
+// ---------- 照片：预览 → 压缩 → 上传 ----------
+
+// 选中照片后立刻在页面上预览
+function onPhotoChosen(e) {
+  const file = e.target.files[0];
+  const preview = document.getElementById("photo-preview");
+  if (!file) {
+    preview.classList.add("hidden");
+    return;
+  }
+  preview.src = URL.createObjectURL(file);
+  preview.classList.remove("hidden");
+}
+
+// 上传前把照片压到最长边 1200px、JPEG 80% 质量：
+// 手机原图常 3~8MB，压缩后通常 200KB 左右，上传快、首页加载也快
+function compressImage(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);
+      const max = 1200;
+      // 图已经够小就不压，直接用原图
+      if (img.width <= max && img.height <= max && file.size < 300 * 1024) {
+        return resolve(file);
+      }
+      const scale = Math.min(1, max / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => resolve(blob || file), "image/jpeg", 0.8);
+    };
+    img.onerror = () => resolve(file); // 压缩失败就用原图兜底
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// 压缩后上传到 item-images 存储桶，返回公开访问链接
+async function uploadPhoto(file) {
+  const blob = await compressImage(file);
+  const ext = blob.type === "image/jpeg" ? "jpg" : (file.name.split(".").pop() || "jpg");
+  // 路径带上用户 id，方便管理也避免重名撞车
+  const path = currentUser.id + "/" + Date.now() + "." + ext;
+  const { error } = await sb.storage.from("item-images").upload(path, blob, {
+    contentType: blob.type || "image/jpeg"
+  });
+  if (error) throw error;
+  const { data } = sb.storage.from("item-images").getPublicUrl(path);
+  return data.publicUrl;
+}
+
 // ---------- 确认上架 ----------
 
 async function confirmImport() {
@@ -95,6 +147,23 @@ async function confirmImport() {
   btn.disabled = true;
   setMsg("");
 
+  // 选了照片就先传照片；上传失败不中断流程，提示后恢复按钮，可去掉照片重试
+  let imageUrl = null;
+  const photoFile = document.getElementById("photo").files[0];
+  if (photoFile) {
+    btn.textContent = "上传照片中…";
+    try {
+      imageUrl = await uploadPhoto(photoFile);
+    } catch (e) {
+      setMsg("照片上传失败，可去掉照片重试");
+      btn.disabled = false;
+      btn.textContent = "确认上架";
+      return;
+    }
+  }
+
+  btn.textContent = "上架中…";
+
   // source='agent' 标记这条来自 AI 回填，首页会展示"AI 生成"徽章
   const { error } = await sb.from("items").insert({
     title: parsedItem.title,
@@ -102,6 +171,7 @@ async function confirmImport() {
     price: parsedItem.price,
     contact: parsedItem.contact,
     category: parsedItem.category,
+    image_url: imageUrl || null,
     status: "active",
     source: "agent",
     user_id: currentUser.id,
@@ -110,6 +180,7 @@ async function confirmImport() {
   if (error) {
     setMsg("上架失败：" + error.message);
     btn.disabled = false;
+    btn.textContent = "确认上架";
     return;
   }
   location.href = "index.html?new=1";
